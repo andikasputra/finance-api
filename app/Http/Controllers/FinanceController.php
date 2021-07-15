@@ -50,26 +50,26 @@ class FinanceController extends Controller
 
     public function show(Request $request, $id)
     {
-        $finance = Finance::find($id);
+        $finance = Finance::where('id',$id)->where('user_id', Auth::user()->id)->first();
         if (empty($finance)) {
             abort(404, 'Data not found');
         }
-        if (Gate::denies('update-finance', $finance)) {
-            abort(403, 'You dont have access to this data');
-        }
+        // if (Gate::denies('update-finance', $finance)) {
+        //     abort(403, 'You dont have access to this data');
+        // }
         $finance->load('images');
         return response($finance);
     }
 
     public function update(Request $request, $id)
     {
-        $finance = Finance::find($id);
+        $finance = Finance::where('id',$id)->where('user_id', Auth::user()->id)->first();
         if (empty($finance)) {
             abort(404, 'Data not found');
         }
-        if (Gate::denies('update-finance', $finance)) {
-            abort(403, 'You dont have access to this data');
-        }
+        // if (Gate::denies('update-finance', $finance)) {
+        //     abort(403, 'You dont have access to this data');
+        // }
         $validated = $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required',
@@ -90,13 +90,13 @@ class FinanceController extends Controller
 
     public function uploadImage(Request $request, $id)
     {
-        $finance = Finance::find($id);
+        $finance = Finance::where('id',$id)->where('user_id', Auth::user()->id)->first();
         if (empty($finance)) {
             abort(404, 'Data not found');
         }
-        if (Gate::denies('update-finance', $finance)) {
-            abort(403, 'You dont have access to this data');
-        }
+        // if (Gate::denies('update-finance', $finance)) {
+        //     abort(403, 'You dont have access to this data');
+        // }
         if (!$request->hasFile('image')) {
             abort(400, 'image is required');
         }
@@ -110,13 +110,13 @@ class FinanceController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $finance = Finance::find($id);
+        $finance = Finance::where('id',$id)->where('user_id', Auth::user()->id)->first();
         if (empty($finance)) {
             abort(404, 'Data not found');
         }
-        if (Gate::denies('delete-finance', $finance)) {
-            abort(403, 'You dont have access to this data');
-        }
+        // if (Gate::denies('delete-finance', $finance)) {
+        //     abort(403, 'You dont have access to this data');
+        // }
         $finance->delete();
         return response($finance);
     }
